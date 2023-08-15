@@ -5,6 +5,7 @@
 import sqlite3
 
 class ManejoClientes:
+    '''Clase manejo clientes, crea la tabla en caso de que no exista'''
     def __init__(self):
         self.conexion = sqlite3.connect("restaurantehappypizza.db")
         self.cursor = self.conexion.cursor()
@@ -19,6 +20,7 @@ class ManejoClientes:
         self.conexion.commit()
 
     def agregar_cliente(self, clave, nombre, direccion, correo, telefono):
+        '''En esta funcion hacemos un agregado de los clientes'''
         try:
             self.cursor.execute('''INSERT INTO Clientes (clave, nombre, direccion, correo_electronico, telefono)
                                 VALUES (?, ?, ?, ?, ?)''', (clave, nombre, direccion, correo, telefono))
@@ -28,6 +30,7 @@ class ManejoClientes:
             print("Error al agregar el cliente:", error)
 
     def eliminar_cliente(self, clave):
+        '''Eliminación de los clientes, donde con la Clave realizamos el borrado de la BD'''
         try:
             self.cursor.execute('''DELETE FROM Clientes WHERE clave = ?''', (clave,))
             self.conexion.commit()
@@ -36,6 +39,8 @@ class ManejoClientes:
             print("Error al eliminar el cliente:", error)
 
     def actualizar_cliente(self, clave, nombre, direccion, correo, telefono):
+        '''Actualización de los clientes, donde a través de la clave actualizamos los demás
+        valores'''
         try:
             self.cursor.execute('''UPDATE Clientes SET nombre = ?, direccion = ?, correo_electronico = ?, telefono = ?
                                 WHERE clave = ?''', (nombre, direccion, correo, telefono, clave))
@@ -45,6 +50,8 @@ class ManejoClientes:
             print("Error al actualizar el cliente:", error)
 
     def mostrar_clientes(self):
+        '''Aquí realizamos una selección global de la tabla clientes para imprimir a través
+        de un ciclo for que realiza un recorrido de todos los valores'''
         self.cursor.execute('''SELECT * FROM Clientes''')
         clientes = self.cursor.fetchall()
         print("Lista de clientes:")

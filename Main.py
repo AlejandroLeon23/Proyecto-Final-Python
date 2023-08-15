@@ -8,6 +8,9 @@ from menu import ManejoMenu
 from pedidos import ManejoPedidos
 
 def main():
+    '''Aqui con esta función main hacemos el llamado a nuestras 3 clases, ManejoClientes
+    ManejoMenu y ManejoPedidos, las 3 con un módulo cada una, además tenemos el menú 
+    completo de la aplicación para acceder a cada uno de los métodos de las clases'''
     manejador_clientes = ManejoClientes()
     manejador_menu = ManejoMenu()
     manejador_pedidos = ManejoPedidos()
