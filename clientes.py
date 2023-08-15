@@ -2,88 +2,63 @@
 #Proyecto Final Python
 #Happy Burger
 #12 de Agosto de 2023
+import sqlite3
 
 class ManejoClientes:
     def __init__(self):
-        self.clientes = {}
+        self.conexion = sqlite3.connect("restaurante.db")
+        self.cursor = self.conexion.cursor()
+
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS Clientes (
+            clave TEXT PRIMARY KEY,
+            nombre TEXT,
+            direccion TEXT,
+            correo_electronico TEXT,
+            telefono TEXT
+        )''')
+        self.conexion.commit()
 
     def agregar_cliente(self, clave, nombre, direccion, correo, telefono):
-        if clave not in self.clientes:
-            self.clientes[clave] = {
-                'nombre': nombre,
-                'direccion': direccion,
-                'correo_electronico': correo,
-                'telefono': telefono
-            }
+        try:
+            self.cursor.execute('''INSERT INTO Clientes (clave, nombre, direccion, correo_electronico, telefono)
+                                VALUES (?, ?, ?, ?, ?)''', (clave, nombre, direccion, correo, telefono))
+            self.conexion.commit()
             print("Cliente agregado con éxito.")
-        else:
-            print("Ya existe un cliente con esta clave.")
+        except sqlite3.Error as error:
+            print("Error al agregar el cliente:", error)
 
     def eliminar_cliente(self, clave):
-        if clave in self.clientes:
-            del self.clientes[clave]
+        try:
+            self.cursor.execute('''DELETE FROM Clientes WHERE clave = ?''', (clave,))
+            self.conexion.commit()
             print("Cliente eliminado con éxito.")
-        else:
-            print("No se encontró ningún cliente con esta clave.")
+        except sqlite3.Error as error:
+            print("Error al eliminar el cliente:", error)
 
     def actualizar_cliente(self, clave, nombre, direccion, correo, telefono):
-        if clave in self.clientes:
-            self.clientes[clave] = {
-                'nombre': nombre,
-                'direccion': direccion,
-                'correo_electronico': correo,
-                'telefono': telefono
-            }
+        try:
+            self.cursor.execute('''UPDATE Clientes SET nombre = ?, direccion = ?, correo_electronico = ?, telefono = ?
+                                WHERE clave = ?''', (nombre, direccion, correo, telefono, clave))
+            self.conexion.commit()
             print("Cliente actualizado con éxito.")
-        else:
-            print("No se encontró ningún cliente con esta clave.")
+        except sqlite3.Error as error:
+            print("Error al actualizar el cliente:", error)
 
     def mostrar_clientes(self):
+        self.cursor.execute('''SELECT * FROM Clientes''')
+        clientes = self.cursor.fetchall()
         print("Lista de clientes:")
-        for clave, cliente in self.clientes.items():
-            print(f"Clave: {clave}")
-            print(f"Nombre: {cliente['nombre']}")
-            print(f"Dirección: {cliente['direccion']}")
-            print(f"Correo electrónico: {cliente['correo_electronico']}")
-            print(f"Teléfono: {cliente['telefono']}")
+        for cliente in clientes:
+            print(f"Clave: {cliente[0]}")
+            print(f"Nombre: {cliente[1]}")
+            print(f"Dirección: {cliente[2]}")
+            print(f"Correo electrónico: {cliente[3]}")
+            print(f"Teléfono: {cliente[4]}")
             print("-" * 30)
 
-def main():
-    manejador = ManejoClientes()
-
-    while True:
-        print("1. Agregar cliente")
-        print("2. Eliminar cliente")
-        print("3. Actualizar cliente")
-        print("4. Mostrar clientes")
-        print("5. Salir")
-
-        opcion = input("Seleccione una opción: ")
-
-        if opcion == "1":
-            clave = input("Ingrese la clave del cliente: ")
-            nombre = input("Ingrese el nombre del cliente: ")
-            direccion = input("Ingrese la dirección del cliente: ")
-            correo = input("Ingrese el correo electrónico del cliente: ")
-            telefono = input("Ingrese el teléfono del cliente: ")
-            manejador.agregar_cliente(clave, nombre, direccion, correo, telefono)
-        elif opcion == "2":
-            clave = input("Ingrese la clave del cliente a eliminar: ")
-            manejador.eliminar_cliente(clave)
-        elif opcion == "3":
-            clave = input("Ingrese la clave del cliente a actualizar: ")
-            nombre = input("Ingrese el nuevo nombre del cliente: ")
-            direccion = input("Ingrese la nueva dirección del cliente: ")
-            correo = input("Ingrese el nuevo correo electrónico del cliente: ")
-            telefono = input("Ingrese el nuevo teléfono del cliente: ")
-            manejador.actualizar_cliente(clave, nombre, direccion, correo, telefono)
-        elif opcion == "4":
-            manejador.mostrar_clientes()
-        elif opcion == "5":
-            print("Saliendo del programa.")
-            break
-        else:
-            print("Opción inválida. Por favor, seleccione una opción válida.")
+    def cerrar_conexion(self):
+        self.conexion.close()
 
 if __name__ == "__main__":
-    main()
+    print("Este archivo no debe ejecutarse directamente.")
+
