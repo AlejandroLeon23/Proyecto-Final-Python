@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menú</title>
+</head>
+<body>
+    <h1>Menú</h1>
+    <table>
+        <tr>
+            <th>Clave</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+        </tr>
+        {% for producto in menu %}
+        <tr>
+            <td>{{ producto[0] }}</td>
+            <td>{{ producto[1] }}</td>
+            <td>${{ producto[2]:.2f }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">Volver</a>
+</body>
+</html>
