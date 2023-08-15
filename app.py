@@ -17,20 +17,10 @@ manejador_pedidos = ManejoPedidos()
 def index():
     return render_template('index.html')
 
-@app.route('/menu')
-def mostrar_menu():
-    menu = manejador_menu.mostrar_menu()
-    return render_template('menu.html', menu=menu)
-
-@app.route('/clientes')
-def mostrar_clientes():
-    clientes = manejador_clientes.mostrar_clientes()
-    return render_template('clientes.html', clientes=clientes)
-
 @app.route('/consultar_pedido', methods=['POST'])
 def consultar_pedido():
-    numero_pedido = int(request.form['numero_pedido'])
-    pedido = manejador_pedidos.consultar_pedido(numero_pedido)
+    pedido = request.form['numero_pedido']
+    pedido = ManejoPedidos.mostrar_pedidos(pedido)
     return render_template('consulta_pedido.html', pedido=pedido)
 
 if __name__ == '__main__':
