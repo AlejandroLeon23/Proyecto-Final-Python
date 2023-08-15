@@ -3,7 +3,7 @@ import sqlite3
 
 class ManejoMenu:
     def __init__(self):
-        self.conexion = sqlite3.connect("restaurante.db")
+        self.conexion = sqlite3.connect("restaurantehappypizza.db")
         self.cursor = self.conexion.cursor()
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Menu (
