@@ -5,6 +5,7 @@ import sqlite3
 
 # Crear o conectar a la base de datos
 conexion = sqlite3.connect("restaurantehappypizza.db")
+
 cursor = conexion.cursor()
 
 # Crear la tabla de Clientes

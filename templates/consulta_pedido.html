@@ -9,10 +9,11 @@
         <p>Número de Pedido: {{ pedido[0] }}</p>
         <p>Cliente: {{ pedido[1] }}</p>
         <p>Producto: {{ pedido[2] }}</p>
-        <p>Precio: ${{ pedido[3]:.2f }}</p>
+        <p>Precio: ${{ pedido[3]: }}</p>
     {% else %}
         <p>Pedido no encontrado.</p>
     {% endif %}
     <a href="/">Volver</a>
 </body>
 </html>
+

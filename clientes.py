@@ -4,10 +4,12 @@
 #12 de Agosto de 2023
 import sqlite3
 
+
+
 class ManejoClientes:
     '''Clase manejo clientes, crea la tabla en caso de que no exista'''
     def __init__(self):
-        self.conexion = sqlite3.connect("restaurantehappypizza.db")
+        self.conexion = sqlite3.connect("restaurantehappypizza.db", check_same_thread=False)
         self.cursor = self.conexion.cursor()
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Clientes (

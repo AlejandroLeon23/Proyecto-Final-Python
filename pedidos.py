@@ -4,10 +4,12 @@
 #12 de Agosto de 2023
 import sqlite3
 
+
+
 class ManejoPedidos:
     '''Busca y crea BD restaurantehappypizza'''
     def __init__(self):
-        self.conexion = sqlite3.connect("restaurantehappypizza.db")
+        self.conexion = sqlite3.connect("restaurantehappypizza.db",check_same_thread=False)
         self.cursor = self.conexion.cursor()
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS Pedido (
@@ -58,6 +60,15 @@ class ManejoPedidos:
             print(f"Producto: {pedido[2]}")
             print(f"Precio: ${pedido[3]:.2f}")
             print("-" * 30)
+    def mostrar_pedidos2(self):
+        try:
+            self.cursor.execute("SELECT * FROM Pedido")
+            pedidos = self.cursor.fetchall()
+            return pedidos
+        except sqlite3.Error as error:
+            print("Error al mostrar los pedidos:", error)
+            return []
+            
 
     def cerrar_conexion(self):
         self.conexion.close()
